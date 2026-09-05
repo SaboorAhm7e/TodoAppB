@@ -5,6 +5,7 @@ import (
 	"TodoApp/models"
 	"database/sql"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 
@@ -48,11 +49,12 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
+		port = "8080" // local fallback
 	}
 
-	fmt.Printf("Server running on port %s...\n", port)
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
-		panic(err)
+	log.Printf("Server starting on port %s...", port)
+	err = http.ListenAndServe(":"+port, nil)
+	if err != nil {
+		log.Fatalf("Server failed to start: %v", err)
 	}
 }
